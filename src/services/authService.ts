@@ -1,7 +1,8 @@
-import { Request, Response } from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import User from "../models/User";
+import { Request, Response } from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import User from '../models/User';
+import { StatusCode } from '../enum/AppConst';
 
 const register = async (req: Request, res: Response) => {
   const { user_name, password } = req.body;
@@ -10,8 +11,8 @@ const register = async (req: Request, res: Response) => {
     const existingUser = await User.findOne({ where: { user_name } });
     if (existingUser) {
       return res
-        .status(400)
-        .json({ message: "User already exists. Please try again." });
+        .status(StatusCode.ERROR)
+        .json({ message: 'User already exists. Please try again.' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -22,13 +23,17 @@ const register = async (req: Request, res: Response) => {
     });
 
     if (user_regis_result != null) {
-      res.status(201).json({ message: "User registered successfully" });
+      res
+        .status(StatusCode.CREATED_SUCCESS)
+        .json({ message: 'User registered successfully' });
     } else {
-      res.status(400).json({ message: "User registered failed" });
+      res.status(StatusCode.ERROR).json({ message: 'User registered failed' });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    res
+      .status(StatusCode.INTERNAL_SERVER)
+      .json({ message: 'Internal server error' });
   }
 };
 
@@ -38,21 +43,27 @@ const login = async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({ where: { user_name } });
     if (!user) {
-      return res.status(400).json({ message: "Invalid not available" });
+      return res
+        .status(StatusCode.ERROR)
+        .json({ message: 'Invalid not available' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Password is incorrect" });
+      return res
+        .status(StatusCode.ERROR)
+        .json({ message: 'Password is incorrect' });
     }
 
     const token = jwt.sign({ userId: user.user_id }, process.env.JWT_SECRET!, {
-      expiresIn: "72h",
+      expiresIn: '72h',
     });
 
-    res.status(200).json({ token });
+    res.status(StatusCode.SUCCESS).json({ token });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    res
+      .status(StatusCode.INTERNAL_SERVER)
+      .json({ message: 'Internal server error' });
   }
 };
 

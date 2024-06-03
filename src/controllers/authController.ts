@@ -1,5 +1,5 @@
 import express from 'express';
-import {register, login} from '../services/authService';
+import { register, login } from '../services/authService';
 
 const authController = express.Router();
 

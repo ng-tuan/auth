@@ -1,5 +1,5 @@
-import { DataTypes, Model, Optional, UUID } from "sequelize";
-import sequelize from "../config/db";
+import { DataTypes, Model, Optional } from 'sequelize';
+import sequelize from '../config/db';
 
 interface UserAttributes {
   user_id: string;
@@ -7,7 +7,7 @@ interface UserAttributes {
   password: string;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "user_id"> {}
+interface UserCreationAttributes extends Optional<UserAttributes, 'user_id'> {}
 
 class User
   extends Model<UserAttributes, UserCreationAttributes>
@@ -28,19 +28,20 @@ User.init(
       unique: true,
     },
     user_name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
     },
     password: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
     },
   },
   {
     sequelize,
-    modelName: "User",
+    modelName: 'User',
+    tableName: 'users',
     timestamps: false,
-  }
+  },
 );
 
 export default User;
