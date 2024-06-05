@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import sequelize from './config/db';
 import authController from './controllers/authController';
+import commonController from './controllers/commonController';
 import imageController from './controllers/imageController';
 
 dotenv.config();
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use('/api/auth', authController);
 app.use('/api/image', imageController);
+app.use('/api/com', commonController);
 
 const PORT = process.env.PORT || 3000;
 
