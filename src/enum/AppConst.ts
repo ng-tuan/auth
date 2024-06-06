@@ -1,4 +1,4 @@
-export const APP_DOMAIN = 'https://cdn.annk.info'; // change domain to storage file
+export const APP_DOMAIN = 'https://cdn.annk.info/assets'; // change domain to storage file
 export const FILE_STORAGE_LOCATION = './assets';
 
 export const StatusCode = {
