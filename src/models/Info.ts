@@ -5,12 +5,12 @@ import sequelize from '../config/db'; // Assuming sequelize is correctly configu
 // Define the attributes interface
 interface InfoAttributes {
   id: string;
-  info_businessName: string;
-  info_phoneNumber: string;
-  info_address: string;
-  info_logo: string;
-  info_email: string;
-  info_website: string;
+  business_name: string;
+  phone_number: string;
+  address: string;
+  logo: string;
+  email: string;
+  website: string;
 }
 
 // Define the creation attributes interface extending optional
@@ -22,12 +22,12 @@ class Info
   implements InfoAttributes
 {
   public id!: string; // Declare id as part of the class
-  public info_businessName!: string;
-  public info_phoneNumber!: string;
-  public info_address!: string;
-  public info_logo!: string;
-  public info_email!: string;
-  public info_website!: string;
+  public business_name!: string;
+  public phone_number!: string;
+  public address!: string;
+  public logo!: string;
+  public email!: string;
+  public website!: string;
 }
 
 // Initialize the Info model with sequelize
@@ -40,27 +40,27 @@ Info.init(
       allowNull: false,
       unique: true,
     },
-    info_businessName: {
+    business_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    info_phoneNumber: {
+    phone_number: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    info_address: {
+    address: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    info_logo: {
+    logo: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    info_email: {
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    info_website: {
+    website: {
       type: DataTypes.STRING,
       allowNull: false,
     },

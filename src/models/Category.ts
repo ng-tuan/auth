@@ -5,7 +5,7 @@ import sequelize from '../config/db';
 interface CategoryAttributes {
   id: number;
   category_name: string;
-  category_slug: string;
+  slug: string;
   parent_id: number | null;
 }
 
@@ -18,7 +18,7 @@ class Category
 {
   public id!: number;
   public category_name!: string;
-  public category_slug!: string;
+  public slug!: string;
   public parent_id!: number | null;
 
   public readonly createdAt!: Date;
@@ -38,7 +38,7 @@ Category.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    category_slug: {
+    slug: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,

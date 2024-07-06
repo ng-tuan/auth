@@ -34,12 +34,12 @@ const getCategoryById = async (req: Request, res: Response) => {
 };
 
 const createCategory = async (req: Request, res: Response) => {
-  const { category_name, category_slug, parent_id } = req.body;
+  const { category_name, slug, parent_id } = req.body;
 
   try {
     const category = await Category.create({
       category_name,
-      category_slug,
+      slug,
       parent_id,
     });
 
@@ -54,7 +54,7 @@ const createCategory = async (req: Request, res: Response) => {
 
 const updateCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { category_name, category_slug, parent_id } = req.body;
+  const { category_name, slug, parent_id } = req.body;
   try {
     const category = await Category.findByPk(id);
     if (!category) {
@@ -64,7 +64,7 @@ const updateCategory = async (req: Request, res: Response) => {
     }
     // Update category properties
     category.category_name = category_name;
-    category.category_slug = category_slug;
+    category.slug = slug;
     category.parent_id = parent_id;
     await category.save();
     res.status(StatusCode.SUCCESS).json({ data: category });

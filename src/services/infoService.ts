@@ -23,23 +23,17 @@ const getInfo = async (req: Request, res: Response) => {
 };
 
 const newInfo = async (req: Request, res: Response) => {
-  const {
-    info_businessName,
-    info_phoneNumber,
-    info_address,
-    info_logo,
-    info_email,
-    info_website,
-  } = req.body;
+  const { business_name, phone_number, address, logo, email, website } =
+    req.body;
 
   try {
     const info = await Info.create({
-      info_businessName,
-      info_phoneNumber,
-      info_address,
-      info_logo,
-      info_email,
-      info_website,
+      business_name,
+      phone_number,
+      address,
+      logo,
+      email,
+      website,
     });
 
     res.status(StatusCode.CREATED_SUCCESS).json({ data: info });
@@ -53,7 +47,8 @@ const newInfo = async (req: Request, res: Response) => {
 
 const editInfo = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { businessName, phoneNumber, address, logo, email, website } = req.body;
+  const { business_name, phone_number, address, logo, email, website } =
+    req.body;
 
   try {
     const info = await Info.findByPk(id);
@@ -64,12 +59,12 @@ const editInfo = async (req: Request, res: Response) => {
     }
 
     // Update only the provided fields
-    if (businessName !== undefined) info.info_businessName = businessName;
-    if (phoneNumber !== undefined) info.info_phoneNumber = phoneNumber;
-    if (address !== undefined) info.info_address = address;
-    if (logo !== undefined) info.info_logo = logo;
-    if (email !== undefined) info.info_email = email;
-    if (website !== undefined) info.info_website = website;
+    if (business_name !== undefined) info.business_name = business_name;
+    if (phone_number !== undefined) info.phone_number = phone_number;
+    if (address !== undefined) info.address = address;
+    if (logo !== undefined) info.logo = logo;
+    if (email !== undefined) info.email = email;
+    if (website !== undefined) info.website = website;
 
     await info.save();
 
@@ -86,14 +81,13 @@ const deleteInfo = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const info = await Info.findByPk(id);
-    if (!info) {
+    const deletedCount = await Info.destroy({ where: { id } });
+
+    if (deletedCount === 0) {
       return res
         .status(StatusCode.NOT_FOUND)
         .json({ message: 'Information not found' });
     }
-
-    await Info.destroy({ where: { id: id } });
 
     res
       .status(StatusCode.SUCCESS)
