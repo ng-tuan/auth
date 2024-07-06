@@ -1,6 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from './../config/db';
-
+import sequelize from '../config/db';
 interface MenuAttributes {
   menu_id: number;
   menu_name: string;
