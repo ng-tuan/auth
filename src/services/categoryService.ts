@@ -34,13 +34,13 @@ const getCategoryById = async (req: Request, res: Response) => {
 };
 
 const createCategory = async (req: Request, res: Response) => {
-  const { category_name, slug, parentId } = req.body;
+  const { category_name, category_slug, parent_id } = req.body;
 
   try {
     const category = await Category.create({
       category_name,
-      slug,
-      parentId,
+      category_slug,
+      parent_id,
     });
 
     res.status(StatusCode.CREATED_SUCCESS).json({ data: category });
@@ -54,7 +54,7 @@ const createCategory = async (req: Request, res: Response) => {
 
 const updateCategory = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { category_name, slug, parentId } = req.body;
+  const { category_name, category_slug, parent_id } = req.body;
   try {
     const category = await Category.findByPk(id);
     if (!category) {
@@ -64,8 +64,8 @@ const updateCategory = async (req: Request, res: Response) => {
     }
     // Update category properties
     category.category_name = category_name;
-    category.slug = slug;
-    category.parentId = parentId;
+    category.category_slug = category_slug;
+    category.parent_id = parent_id;
     await category.save();
     res.status(StatusCode.SUCCESS).json({ data: category });
   } catch (error) {
@@ -85,7 +85,7 @@ const deleteCategory = async (req: Request, res: Response) => {
         .status(StatusCode.NOT_FOUND)
         .json({ message: 'Category not found' });
     }
-    await category.destroy();
+    await Category.destroy({ where: { id: id } });
     res
       .status(StatusCode.SUCCESS)
       .json({ message: 'Category deleted successfully' });

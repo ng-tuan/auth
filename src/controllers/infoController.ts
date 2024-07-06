@@ -9,9 +9,9 @@ import {
 
 const infoController = express.Router();
 
-infoController.get('/getInfo', getInfo);
-infoController.post('/newInfo', newInfo);
-infoController.put('/editInfo/:id', editInfo);
-infoController.delete('/deleteInfo/:id', deleteInfo);
+infoController.get('/', getInfo);
+infoController.post('/', newInfo);
+infoController.put('/:id', editInfo);
+infoController.delete('/:id', deleteInfo);
 
 export default infoController;

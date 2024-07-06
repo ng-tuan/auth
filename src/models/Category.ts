@@ -5,8 +5,8 @@ import sequelize from '../config/db';
 interface CategoryAttributes {
   id: number;
   category_name: string;
-  slug: string;
-  parentId: number | null;
+  category_slug: string;
+  parent_id: number | null;
 }
 
 interface CategoryCreationAttributes
@@ -18,8 +18,8 @@ class Category
 {
   public id!: number;
   public category_name!: string;
-  public slug!: string;
-  public parentId!: number | null;
+  public category_slug!: string;
+  public parent_id!: number | null;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -38,12 +38,12 @@ Category.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    slug: {
+    category_slug: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
-    parentId: {
+    parent_id: {
       type: DataTypes.BIGINT.UNSIGNED,
       allowNull: true,
     },
@@ -65,7 +65,7 @@ Category.hasMany(Category, {
 
 Category.belongsTo(Category, {
   as: 'parent',
-  foreignKey: 'parentId',
+  foreignKey: 'parent_id',
 });
 
 export default Category;
