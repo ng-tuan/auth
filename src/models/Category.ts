@@ -21,8 +21,8 @@ class Category
   public slug!: string;
   public parent_id!: number | null;
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  public readonly created_date!: Date;
+  public readonly updated_date!: Date;
 }
 
 Category.init(
@@ -58,7 +58,7 @@ Category.init(
 
 Category.hasMany(Category, {
   as: 'children',
-  foreignKey: 'parentId',
+  foreignKey: 'parent_id',
   onDelete: 'SET NULL',
   onUpdate: 'CASCADE',
 });
