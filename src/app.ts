@@ -6,6 +6,7 @@ import commonController from './controllers/commonController';
 import imageController from './controllers/imageController';
 import infoController from './controllers/infoController';
 import categoryController from './controllers/categoryController';
+import postController from './controllers/postController';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use('/api/image', imageController);
 app.use('/api/com', commonController);
 app.use('/api/info', infoController);
 app.use('/api/category', categoryController);
+app.use('/api/post', postController);
 
 const PORT = process.env.PORT || 3000;
 
