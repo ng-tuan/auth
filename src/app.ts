@@ -22,11 +22,11 @@ const PORT = process.env.PORT || 3000;
 
 sequelize
   .sync()
-  .then(() => {
-    app.listen(PORT, () => {
+  .then((): void => {
+    app.listen(PORT, (): void => {
       console.log(`Server running on port ${PORT}`);
     });
   })
-  .catch(err => {
+  .catch((err: Error): void => {
     console.error('Unable to connect to the database:', err);
   });
