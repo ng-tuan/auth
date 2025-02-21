@@ -1,6 +1,10 @@
 #!/bin/bash
+
+# Define the image name
+IMAGE_NAME="auth-app"
+
 # Build the Docker image for the Node.js application
-docker build -t my-node-app .
+docker build -t $IMAGE_NAME .
 
 # Stop and remove any running containers
 docker-compose down
