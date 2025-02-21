@@ -16,8 +16,14 @@ COPY . .
 # Copy the .env file
 COPY .env .env
 
+# Copy the wait-for-it script
+COPY wait-for-it.sh /usr/src/app/wait-for-it.sh
+
+# Make the wait-for-it script executable
+RUN chmod +x /usr/src/app/wait-for-it.sh
+
 # Expose the port the app runs on
 EXPOSE 8080
 
 # Define the command to run your application
-CMD npm run dev
+CMD ["./wait-for-it.sh", "db:3306", "--", "npm", "run", "dev"]
