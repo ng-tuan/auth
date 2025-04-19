@@ -16,6 +16,7 @@
         "endOfLine": "auto"
       }
     ],
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "eol-last": "off"
   }
 }

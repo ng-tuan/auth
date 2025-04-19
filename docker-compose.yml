@@ -21,4 +21,4 @@ services:
       MYSQL_ROOT_PASSWORD: rootp
       MYSQL_DATABASE: auth
     ports:
-      - '3306:3306'
+      - '3307:3306'
