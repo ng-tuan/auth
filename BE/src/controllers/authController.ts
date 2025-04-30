@@ -7,7 +7,7 @@ const authController = express.Router();
 
 // Create rate limiters for auth endpoints
 const loginLimiter = createRateLimiter({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 5 * 60 * 1000, // 15 minutes
   max: 5, // 5 attempts per IP
   message: 'Too many login attempts, please try again after 15 minutes',
 });

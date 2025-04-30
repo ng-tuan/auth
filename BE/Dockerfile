@@ -1,16 +1,14 @@
 # Use an official Node.js runtime as a parent image
-FROM node:20
+FROM node:18
 
 # Set the working directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copy package.json and package-lock.json files
+# Install dependencies first (better caching)
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Copy the rest of the application
 COPY . .
 
 # Copy the .env file
@@ -23,7 +21,7 @@ COPY wait-for-it.sh /usr/src/app/wait-for-it.sh
 RUN chmod +x /usr/src/app/wait-for-it.sh
 
 # Expose the port the app runs on
-EXPOSE 8080
+EXPOSE 3000
 
-# Define the command to run your application
-CMD ["./wait-for-it.sh", "db:3306", "--", "npm", "run", "dev"]
+# Use nodemon for development
+CMD ["npm", "run", "dev"]

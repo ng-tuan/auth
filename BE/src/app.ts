@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
+import cors from 'cors';
 import sequelize from './config/db';
 import authController from './controllers/authController';
 import commonController from './controllers/commonController';
@@ -10,6 +11,15 @@ import categoryController from './controllers/categoryController';
 dotenv.config();
 
 const app = express();
+
+// Configure CORS
+app.use(cors({
+  origin: 'http://localhost:3001',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}));
+
 app.use(express.json());
 
 app.use('/api/auth', authController);

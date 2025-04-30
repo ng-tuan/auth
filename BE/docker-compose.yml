@@ -1,24 +1,68 @@
-version: '3.8'
+name: auth-app
 
 services:
-  app:
+  backend:
     build: .
+    container_name: auth-app-backend
     ports:
-      - '8080:8080'
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
     environment:
+      - NODE_ENV=development
+      - PORT=3000
       - DB_HOST=db
-      - DB_PORT=3306
       - DB_USER=root
       - DB_PASSWORD=rootp
       - DB_NAME=auth
+      - JWT_SECRET=your_jwt_secret_key
+      - JWT_REFRESH_SECRET=your_jwt_refresh_secret_key
+      - CORS_ORIGIN=http://localhost:3001
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    command: ./wait-for-it.sh db:3306 -- npm run dev
+    restart: unless-stopped
+
+  # frontend:
+  #   build: 
+  #     context: ../fe
+  #     dockerfile: Dockerfile
+  #   container_name: auth-app-frontend
+  #   ports:
+  #     - "3001:3001"
+  #   volumes:
+  #     - ../fe:/app
+  #     - /app/node_modules
+  #     - /app/.next
+  #   environment:
+  #     - NEXT_PUBLIC_API_URL=http://localhost:3000
+  #     - NODE_ENV=development
+  #     - PORT=3001
+  #   depends_on:
+  #     backend:
+  #       condition: service_started
+  #   command: npm run dev
+  #   restart: unless-stopped
 
   db:
     image: mysql:8
+    container_name: auth-app-db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootp
       MYSQL_DATABASE: auth
     ports:
       - '3307:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:
+    name: auth-app-mysql-data
