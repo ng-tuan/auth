@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash, FaFacebook, FaGoogle } from "react-icons/fa";
 import Popup from "../../components/Popup";
 import Label from "../../components/RequiredField";
+import Loading from "../../components/Loading";
 import { getCredentials, getHeaders, getUrl } from "../../config";
 
 export default function LoginForm() {
@@ -14,6 +15,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [popupStatus, setPopupStatus] = useState<
     "success" | "error" | "warning"
   >("success");
@@ -22,6 +24,7 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await fetch(getUrl("auth.login"), {
@@ -57,11 +60,14 @@ export default function LoginForm() {
         "An error occurred during login. Please try again later."
       );
       setShowPopup(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+      {isLoading && <Loading message="Logging in..." />}
       <Popup
         isOpen={showPopup}
         onClose={() => setShowPopup(false)}
@@ -123,7 +129,7 @@ export default function LoginForm() {
                 className="block text-sm font-medium text-gray-300"
               />
               <Link
-                href="/forgot-password"
+                href="#"
                 className="text-sm text-gray-400 hover:text-blue-500"
               >
                 Forgot?

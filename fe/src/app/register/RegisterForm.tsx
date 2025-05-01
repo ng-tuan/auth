@@ -6,52 +6,57 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Label from "../../components/RequiredField";
 import Popup from "../../components/Popup";
+import Loading from "../../components/Loading";
 import { getCredentials, getHeaders, getUrl } from "../../config";
 
 export default function RegisterForm() {
   const router = useRouter();
-  const [username, setUsername] = useState("");
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [popupStatus, setPopupStatus] = useState<"success" | "error" | "warning">("success");
   const [popupTitle, setPopupTitle] = useState("");
   const [popupMessage, setPopupMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-
+    
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setPopupStatus("error");
+      setPopupTitle("Password Mismatch");
+      setPopupMessage("The passwords you entered do not match. Please try again.");
+      setShowPopup(true);
       return;
     }
+
+    setIsLoading(true);
 
     try {
       const response = await fetch(getUrl("auth.register"), {
         method: "POST",
         headers: getHeaders(),
         credentials: getCredentials(),
-        body: JSON.stringify({ user_name: username, password }),
+        body: JSON.stringify({ user_name: userName, password }),
       });
 
       if (response.ok) {
-        setPopupStatus("success");
-        setPopupTitle("Registration Successful!");
-        setPopupMessage("Your account has been created successfully. You can now login with your credentials.");
-        setShowPopup(true);
         // Reset form
-        setUsername("");
+        setUserName("");
         setPassword("");
         setConfirmPassword("");
+        setPopupStatus("success");
+        setPopupTitle("Registration Successful!");
+        setPopupMessage("Your account has been created successfully. You can now log in.");
+        setShowPopup(true);
       } else {
         const data = await response.json();
         setPopupStatus("error");
         setPopupTitle("Registration Failed");
-        setPopupMessage(data.message || "Registration failed. Please try again.");
+        setPopupMessage(data.message || "Failed to create account. Please try again.");
         setShowPopup(true);
       }
     } catch (error) {
@@ -60,11 +65,14 @@ export default function RegisterForm() {
       setPopupTitle("Error");
       setPopupMessage("An error occurred during registration. Please try again later.");
       setShowPopup(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+      {isLoading && <Loading message="Creating your account..." />}
       <Popup
         isOpen={showPopup}
         onClose={() => setShowPopup(false)}
@@ -80,12 +88,6 @@ export default function RegisterForm() {
           Create an account
         </h1>
 
-        {error && (
-          <div className="mb-4 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-500 text-sm">
-            {error}
-          </div>
-        )}
-
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <Label
@@ -97,8 +99,8 @@ export default function RegisterForm() {
             <input
               type="text"
               id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
               required
               className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
               placeholder="Enter your username"
