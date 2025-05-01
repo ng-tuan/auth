@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { FaEye, FaEyeSlash, FaCheckCircle } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Label from "../../components/RequiredField";
-import SuccessPopup from "../../components/SuccessPopup";
+import Popup from "../../components/Popup";
 import { getCredentials, getHeaders, getUrl } from "../../config";
 
 export default function RegisterForm() {
@@ -16,7 +16,10 @@ export default function RegisterForm() {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupStatus, setPopupStatus] = useState<"success" | "error" | "warning">("success");
+  const [popupTitle, setPopupTitle] = useState("");
+  const [popupMessage, setPopupMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,29 +39,40 @@ export default function RegisterForm() {
       });
 
       if (response.ok) {
-        setShowSuccess(true);
+        setPopupStatus("success");
+        setPopupTitle("Registration Successful!");
+        setPopupMessage("Your account has been created successfully. You can now login with your credentials.");
+        setShowPopup(true);
         // Reset form
         setUsername("");
         setPassword("");
         setConfirmPassword("");
       } else {
         const data = await response.json();
-        setError(data.message || "Registration failed");
+        setPopupStatus("error");
+        setPopupTitle("Registration Failed");
+        setPopupMessage(data.message || "Registration failed. Please try again.");
+        setShowPopup(true);
       }
     } catch (error) {
       console.error("Registration error:", error);
-      setError("An error occurred during registration");
+      setPopupStatus("error");
+      setPopupTitle("Error");
+      setPopupMessage("An error occurred during registration. Please try again later.");
+      setShowPopup(true);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      <SuccessPopup
-        isOpen={showSuccess}
-        onClose={() => setShowSuccess(false)}
-        onAction={() => router.push("/login")}
-        title="Registration Successful!"
-        message="Your account has been created successfully. You can now login with your credentials."
+      <Popup
+        isOpen={showPopup}
+        onClose={() => setShowPopup(false)}
+        onAction={popupStatus === "success" ? () => router.push("/login") : undefined}
+        status={popupStatus}
+        title={popupTitle}
+        message={popupMessage}
+        actionText={popupStatus === "success" ? "Go to Login" : undefined}
       />
 
       <div className="w-full max-w-md p-8 rounded-2xl bg-gray-900/80 backdrop-blur-sm shadow-xl">
