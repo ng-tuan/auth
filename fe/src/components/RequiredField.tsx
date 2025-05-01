@@ -1,5 +1,5 @@
-import React from 'react';
-import styles from './RequiredField.module.scss';
+import React from "react";
+import styles from "./RequiredField.module.scss";
 
 interface RequiredFieldProps {
   label: string;
@@ -8,7 +8,12 @@ interface RequiredFieldProps {
   required?: boolean;
 }
 
-const Label: React.FC<RequiredFieldProps> = ({ label, htmlFor, className, required = false }) => {
+const Label: React.FC<RequiredFieldProps> = ({
+  label,
+  htmlFor,
+  className,
+  required = false,
+}) => {
   return (
     <label htmlFor={htmlFor} className={className || styles.label}>
       {label}
@@ -17,4 +22,4 @@ const Label: React.FC<RequiredFieldProps> = ({ label, htmlFor, className, requir
   );
 };
 
-export default Label; 
+export default Label;

@@ -33,19 +33,19 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  
+
   label {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--text-color);
   }
-  
+
   input {
     padding: 0.5rem;
     border: 1px solid #e5e7eb;
     border-radius: 4px;
     font-size: 1rem;
-    
+
     &:focus {
       outline: none;
       border-color: var(--primary-color);
@@ -65,7 +65,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s;
-  
+
   &:hover {
     background-color: var(--secondary-color);
   }
@@ -85,13 +85,13 @@
   margin-top: 1.5rem;
   font-size: 0.875rem;
   text-align: center;
-  
+
   a {
     color: var(--primary-color);
     font-weight: 500;
-    
+
     &:hover {
       text-decoration: underline;
     }
   }
-} 
+}

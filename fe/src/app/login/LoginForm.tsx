@@ -48,7 +48,7 @@ export default function LoginForm() {
         setPopupStatus("error");
         setPopupTitle("Login Failed");
         setPopupMessage(
-          data.message || "Invalid credentials. Please try again."
+          data.message || "Invalid credentials. Please try again.",
         );
         setShowPopup(true);
       }
@@ -57,7 +57,7 @@ export default function LoginForm() {
       setPopupStatus("error");
       setPopupTitle("Error");
       setPopupMessage(
-        "An error occurred during login. Please try again later."
+        "An error occurred during login. Please try again later.",
       );
       setShowPopup(true);
     } finally {

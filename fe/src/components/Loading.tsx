@@ -5,7 +5,10 @@ interface LoadingProps {
   fullScreen?: boolean;
 }
 
-export default function Loading({ message = "Loading...", fullScreen = true }: LoadingProps) {
+export default function Loading({
+  message = "Loading...",
+  fullScreen = true,
+}: LoadingProps) {
   const content = (
     <div className="flex flex-col items-center justify-center gap-4">
       <div className="relative">
@@ -27,4 +30,4 @@ export default function Loading({ message = "Loading...", fullScreen = true }: L
   }
 
   return <div className="flex items-center justify-center p-8">{content}</div>;
-} 
+}

@@ -1,4 +1,8 @@
-import { FaCheckCircle, FaExclamationCircle, FaExclamationTriangle } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaExclamationCircle,
+  FaExclamationTriangle,
+} from "react-icons/fa";
 
 type PopupStatus = "success" | "error" | "warning";
 
@@ -51,7 +55,9 @@ export default function Popup({
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
       <div className="relative bg-gray-800 p-8 rounded-2xl shadow-xl max-w-md w-full mx-4">
         <div className="flex flex-col items-center">
-          <div className={`${bgColor} ${borderColor} p-4 rounded-full border mb-4`}>
+          <div
+            className={`${bgColor} ${borderColor} p-4 rounded-full border mb-4`}
+          >
             <Icon className={`${iconColor} text-4xl`} />
           </div>
           <h2 className="text-2xl font-semibold text-white mb-2">{title}</h2>
@@ -70,8 +76,8 @@ export default function Popup({
                   status === "success"
                     ? "bg-blue-600 hover:bg-blue-700"
                     : status === "error"
-                    ? "bg-red-600 hover:bg-red-700"
-                    : "bg-yellow-600 hover:bg-yellow-700"
+                      ? "bg-red-600 hover:bg-red-700"
+                      : "bg-yellow-600 hover:bg-yellow-700"
                 } text-white rounded-lg transition-colors`}
               >
                 {actionText}
@@ -82,4 +88,4 @@ export default function Popup({
       </div>
     </div>
   );
-} 
+}

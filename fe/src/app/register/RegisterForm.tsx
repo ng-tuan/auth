@@ -18,17 +18,21 @@ export default function RegisterForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [popupStatus, setPopupStatus] = useState<"success" | "error" | "warning">("success");
+  const [popupStatus, setPopupStatus] = useState<
+    "success" | "error" | "warning"
+  >("success");
   const [popupTitle, setPopupTitle] = useState("");
   const [popupMessage, setPopupMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
       setPopupStatus("error");
       setPopupTitle("Password Mismatch");
-      setPopupMessage("The passwords you entered do not match. Please try again.");
+      setPopupMessage(
+        "The passwords you entered do not match. Please try again.",
+      );
       setShowPopup(true);
       return;
     }
@@ -50,20 +54,26 @@ export default function RegisterForm() {
         setConfirmPassword("");
         setPopupStatus("success");
         setPopupTitle("Registration Successful!");
-        setPopupMessage("Your account has been created successfully. You can now log in.");
+        setPopupMessage(
+          "Your account has been created successfully. You can now log in.",
+        );
         setShowPopup(true);
       } else {
         const data = await response.json();
         setPopupStatus("error");
         setPopupTitle("Registration Failed");
-        setPopupMessage(data.message || "Failed to create account. Please try again.");
+        setPopupMessage(
+          data.message || "Failed to create account. Please try again.",
+        );
         setShowPopup(true);
       }
     } catch (error) {
       console.error("Registration error:", error);
       setPopupStatus("error");
       setPopupTitle("Error");
-      setPopupMessage("An error occurred during registration. Please try again later.");
+      setPopupMessage(
+        "An error occurred during registration. Please try again later.",
+      );
       setShowPopup(true);
     } finally {
       setIsLoading(false);
@@ -76,7 +86,9 @@ export default function RegisterForm() {
       <Popup
         isOpen={showPopup}
         onClose={() => setShowPopup(false)}
-        onAction={popupStatus === "success" ? () => router.push("/login") : undefined}
+        onAction={
+          popupStatus === "success" ? () => router.push("/login") : undefined
+        }
         status={popupStatus}
         title={popupTitle}
         message={popupMessage}
@@ -156,7 +168,11 @@ export default function RegisterForm() {
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300"
               >
-                {showConfirmPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                {showConfirmPassword ? (
+                  <FaEyeSlash size={18} />
+                ) : (
+                  <FaEye size={18} />
+                )}
               </button>
             </div>
           </div>
