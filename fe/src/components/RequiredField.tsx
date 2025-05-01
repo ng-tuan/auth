@@ -4,15 +4,17 @@ import styles from './RequiredField.module.scss';
 interface RequiredFieldProps {
   label: string;
   htmlFor: string;
+  className?: string;
+  required?: boolean;
 }
 
-const RequiredField: React.FC<RequiredFieldProps> = ({ label, htmlFor }) => {
+const Label: React.FC<RequiredFieldProps> = ({ label, htmlFor, className, required = false }) => {
   return (
-    <label htmlFor={htmlFor} className={styles.label}>
+    <label htmlFor={htmlFor} className={className || styles.label}>
       {label}
-      <span className={styles.required}>*</span>
+      {required && <span className={styles.required}>*</span>}
     </label>
   );
 };
 
-export default RequiredField; 
+export default Label; 

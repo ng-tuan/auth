@@ -14,7 +14,7 @@ const loginLimiter = createRateLimiter({
 
 const registerLimiter = createRateLimiter({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3, // 3 attempts per IP
+  max: 10, // 10 attempts per IP
   message: 'Too many registration attempts, please try again after an hour',
 });
 

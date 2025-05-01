@@ -5,20 +5,22 @@ services:
     build: .
     container_name: auth-app-backend
     ports:
-      - "3000:3000"
+      - "${PORT}:${PORT}"
     volumes:
       - .:/app
       - /app/node_modules
     environment:
-      - NODE_ENV=development
-      - PORT=3000
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=rootp
-      - DB_NAME=auth
-      - JWT_SECRET=your_jwt_secret_key
-      - JWT_REFRESH_SECRET=your_jwt_refresh_secret_key
-      - CORS_ORIGIN=http://localhost:3001
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - CORS_ORIGIN=${CORS_ORIGIN}
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
@@ -51,10 +53,12 @@ services:
     container_name: auth-app-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootp
-      MYSQL_DATABASE: auth
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}`
+      MYSQL_DATABASE: ${DB_NAME}
+    env_file:
+      - .env
     ports:
-      - '3307:3306'
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
