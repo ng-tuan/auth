@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash, FaFacebook, FaGoogle } from "react-icons/fa";
 import Popup from "../../components/Popup";
@@ -10,7 +9,6 @@ import Loading from "../../components/Loading";
 import { getCredentials, getHeaders, getUrl } from "../../config";
 
 export default function LoginForm() {
-  const router = useRouter();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -35,6 +33,12 @@ export default function LoginForm() {
       });
 
       if (response.ok) {
+        const data = await response.json();
+        // Store tokens and userId
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.refreshToken);
+        localStorage.setItem('userId', data.userId);
+        
         // Reset form
         setUserName("");
         setPassword("");

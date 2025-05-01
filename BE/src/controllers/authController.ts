@@ -18,13 +18,98 @@ const registerLimiter = createRateLimiter({
   message: 'Too many registration attempts, please try again after an hour',
 });
 
-// Register route with rate limiting
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - user_name
+ *               - password
+ *             properties:
+ *               user_name:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User registered successfully
+ *       400:
+ *         description: Invalid input
+ *       429:
+ *         description: Too many requests
+ */
 authController.post('/register', registerLimiter, register);
 
-// Login route with rate limiting
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Login user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - user_name
+ *               - password
+ *             properties:
+ *               user_name:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *                 refreshToken:
+ *                   type: string
+ *                 userId:
+ *                   type: number
+ *       401:
+ *         description: Invalid credentials
+ *       429:
+ *         description: Too many requests
+ */
 authController.post('/login', loginLimiter, login);
 
-// Refresh token route
+/**
+ * @swagger
+ * /api/auth/refresh-token:
+ *   post:
+ *     summary: Refresh access token
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Token refreshed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *       401:
+ *         description: Invalid or expired refresh token
+ */
 authController.post('/refresh-token', refreshToken);
 
 export default authController;
